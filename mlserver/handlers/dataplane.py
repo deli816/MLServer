@@ -14,6 +14,8 @@ from prometheus_client import (
     Summary,
 )
 
+from datetime import datetime
+
 
 _ModelInferRequestSuccess = Counter(
     "model_infer_request_success",
@@ -90,6 +92,7 @@ class DataPlane:
             self._inference_middleware.request_middleware(payload, model.settings)
 
             # TODO: Make await optional for sync methods
+            print(datetime.now().strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## before predict 111 ########")
             prediction = await model.predict(payload)
 
             # Ensure ID matches

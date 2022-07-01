@@ -13,6 +13,7 @@ from ..handlers import DataPlane, ModelRepositoryHandlers
 from ..utils import insert_headers, extract_headers
 
 from .utils import to_status_code
+from datetime import datetime
 
 
 class Endpoints:
@@ -56,9 +57,14 @@ class Endpoints:
         request_headers = dict(raw_request.headers)
         insert_headers(payload, request_headers)
 
+        start_time = datetime.now()
+        print(start_time.strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## before dataplane 111 ########")
         inference_response = await self._data_plane.infer(
             payload, model_name, model_version
         )
+        finish_time = datetime.now()
+        latency = finish_time.timestamp() * 1000 - start_time.timestamp() * 1000
+        print(finish_time.strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## dataplane latency", latency, " ########")
 
         response_headers = extract_headers(inference_response)
         if response_headers:

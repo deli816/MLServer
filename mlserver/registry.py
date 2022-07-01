@@ -136,6 +136,7 @@ class SingleModelRegistry:
 
         model_class = model_settings.implementation
         new_model = model_class(model_settings)  # type: ignore
+        print("#### new_model: ", new_model)
 
         if previous_loaded_model:
             await self._reload_model(previous_loaded_model, new_model)

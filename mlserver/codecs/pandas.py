@@ -115,5 +115,7 @@ class PandasCodec(RequestCodec):
             request_input.name: _to_series(request_input)
             for request_input in request.inputs
         }
+        #print("##### PandasCodec decode_request data: ", data, "###")
+        #print("##### PandasCodec decode_request pandas dataframe: ", pd.DataFrame(data), "###")
 
         return pd.DataFrame(data)

@@ -108,14 +108,19 @@ class MLModel:
         inference_request: InferenceRequest,
         default_codec: Optional[RequestCodecLike] = None,
     ) -> Any:
+        #print("### try to decode")
+        #print("### model settings: ", self._settings)
         decode_inference_request(inference_request, self._settings, self._inputs_index)
 
         if has_decoded(inference_request):
+            #print("### has decoded")
             return get_decoded(inference_request)
 
         if default_codec:
+            #print("### default decoded")
             return default_codec.decode_request(inference_request)
 
+        #print("### no decode has been performed")
         return inference_request
 
     def encode_response(

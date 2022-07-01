@@ -47,13 +47,17 @@ def is_list_of(payload: Any, instance_type: Type):
 def _get_content_type(
     request: Parametrised, metadata: Optional[Tagged] = None
 ) -> Optional[str]:
+    #print("#### _get_content_type for request: ", request)
     if request.parameters and request.parameters.content_type:
+        #print("#### request parameter content_type: ", request.parameters.content_type)
         return request.parameters.content_type
 
     if metadata is not None:
         if metadata.parameters and metadata.parameters.content_type:
+            #print("#### metadata parameter content_type: ", metadata.parameters.content_type, ", metadata: ", metadata)
             return metadata.parameters.content_type
 
+    #print("#### _get_content_type for request, return None")
     return None
 
 
@@ -126,15 +130,21 @@ def decode_inference_request(
     model_settings: ModelSettings = None,
     metadata_inputs: Dict[str, MetadataTensor] = {},
 ) -> Optional[Any]:
+    #print("### before decode inference_request: ", inference_request)
     for request_input in inference_request.inputs:
         decode_request_input(request_input, metadata_inputs)
 
     request_content_type = _get_content_type(inference_request, model_settings)
+
+    #print("### request content type: ", request_content_type)
     if request_content_type is not None:
         codec = find_request_codec(request_content_type)
         if codec is not None:
+            print("### codec: ", codec)
             decoded_payload = codec.decode_request(inference_request)
             _save_decoded(inference_request, decoded_payload)
+            print("### decode_inference_request inference_request: ", inference_request)
+            print("### decode_inference_request decoded_payload: ", decoded_payload)
             return decoded_payload
 
     return inference_request

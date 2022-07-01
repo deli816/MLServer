@@ -7,6 +7,7 @@ from ..types import InferenceRequest, InferenceResponse
 from ..utils import get_wrapped_method
 from .adaptive import AdaptiveBatcher
 
+from datetime import datetime
 _AdaptiveBatchingAttr = "__adaptive_batching__"
 
 
@@ -40,6 +41,7 @@ def adaptive_batching(f: Callable[[InferenceRequest], Awaitable[InferenceRespons
             )
 
         batcher = getattr(model, _AdaptiveBatchingAttr)
+        print(datetime.now().strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## before predict (batch)) ########")
         return await batcher.predict(payload)
 
     return _inner

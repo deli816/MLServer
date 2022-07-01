@@ -13,6 +13,8 @@ from .messages import ModelUpdateType, ModelUpdateMessage, InferenceResponseMess
 from .utils import terminate_queue, END_OF_QUEUE
 from .logging import logger
 
+from datetime import datetime
+
 IGNORED_SIGNALS = [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]
 
 
@@ -110,6 +112,7 @@ class Worker(Process):
                 request.model_name, request.model_version
             )
 
+            print(datetime.now().strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## before predict 333########")
             inference_response = await model.predict(request.inference_request)
 
             response = InferenceResponseMessage(

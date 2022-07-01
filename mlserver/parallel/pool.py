@@ -23,6 +23,8 @@ from .messages import (
 )
 from .logging import logger
 
+from datetime import datetime
+
 
 PredictMethod = Callable[[InferenceRequest], Coroutine[Any, Any, InferenceResponse]]
 
@@ -154,6 +156,7 @@ class InferencePool:
 
             model = getattr(wrapped_f, "__self__")
 
+            print(datetime.now().strftime("%m/%d/%Y, %H:%M:%S.%f"), ": ######## before predict 222 ########")
             return await self.predict(model.settings, payload)
 
         return _inner
